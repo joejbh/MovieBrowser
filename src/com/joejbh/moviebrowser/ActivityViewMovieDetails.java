@@ -28,21 +28,14 @@ import android.widget.TextView;
 
 public class ActivityViewMovieDetails extends AbstractNavDrawer {
 
-	// Views for Navigation Drawer
-	LinearLayout layoutInsertPoint;
-	RelativeLayout activityLayout;
-	LayoutInflater myInflater;
-	
-	
 	// Views for displaying Movie Content
 	ImageView iViewMovieImage, iViewIsFavorite, iViewShare;
 	TextView tViewMovieName, tViewMovieDescription;
 	
 	
 	// Objects for dealing with SQLite DB 
-	SQLiteDatabase db;
+	SQLiteDatabase writableDb;
 	Cursor cursor;
-	
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -51,26 +44,21 @@ public class ActivityViewMovieDetails extends AbstractNavDrawer {
 		/* ----------------------------------------
 		 * -------- Navigation Drawer stuff -------
 		 */
-		
-		myInflater = LayoutInflater.from(this);
+		LayoutInflater myInflater = LayoutInflater.from(this);
 
-		
 		// Put the layout of the actual activity into the Drawer Layout
-		layoutInsertPoint = (LinearLayout) findViewById(R.id.activity_content);
-		activityLayout = (RelativeLayout) myInflater.inflate(
+		LinearLayout layoutInsertPoint = (LinearLayout) findViewById(R.id.activity_content);
+		RelativeLayout activityLayout = (RelativeLayout) myInflater.inflate(
 				R.layout.activity_view_movie_details, layoutInsertPoint, false);
-		
 		
 		// Create a list of MyListItems for the ArrayAdapter
 		ArrayList<MyListItem> drawerListItems = new NavDrawerContents(
 				getResources());
 
-		
 		// Create the ArrayAdapter for the Drawer.
 		ArrayAdapter<MyListItem> drawerAdapter = new MyArrayAdapter(this,
 				drawerListItems);
 
-		
 		// Create the drawer. This is a method of AbstractNavDrawer.
 		createDrawer(drawerAdapter);
 
@@ -78,16 +66,6 @@ public class ActivityViewMovieDetails extends AbstractNavDrawer {
 		
 		/* ------ End Navigation Drawer stuff -----
 		 * ---------------------------------------- */
-		
-		// Get the id of the movie that was clicked
-		int movieId = getIntent().getExtras().getInt("_idPass");
-		
-		
-		// Get an ImageDownloader for downloading my MovieImages
-		ImageDownloader imageDownloader = new ImageDownloader();
-		
-		 
-		MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(this);
 		
 		
 		// Find all of the Movie ImageViews 
@@ -99,13 +77,18 @@ public class ActivityViewMovieDetails extends AbstractNavDrawer {
 		tViewMovieName = (TextView) findViewById(R.id.tViewMovieName);
 		tViewMovieDescription = (TextView) findViewById(R.id.tViewMovieDescription);
 		
+		// Get the id of the movie that was clicked
+		int movieId = getIntent().getExtras().getInt("_idPass");
 		
-		// Obtain SQLite Db
-		db = dbHelper.getWritableDatabase();
-		
+		// Get an ImageDownloader for downloading my MovieImages
+		ImageDownloader imageDownloader = new ImageDownloader();
+		 
+		// Obtain writable SQLite Db
+		MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(this);
+		writableDb = dbHelper.getWritableDatabase();
 		
 		// Get all the information for the Movie with the correct id
-		cursor = db.query(
+		cursor = writableDb.query(
 				Movies.TABLE_NAME,  	
 				null,			    	
 			    Movies._ID + "=" + movieId,				
@@ -118,13 +101,22 @@ public class ActivityViewMovieDetails extends AbstractNavDrawer {
 		
 		// Obtain DisplayMetrics in order to help determine the best size for the Movie's ImageView
 		DisplayMetrics metrics = new DisplayMetrics();
-
 		getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
 
-		
-		// We're mostly concerned with 
 		int screenWidthPx = metrics.widthPixels;
-		int posterWidth = screenWidthPx - MyDisplayCode.dpToPx(this, 50);
+		int screenHeightPx = metrics.heightPixels;
+		
+		int imageWidth;
+		int imageHeight;
+
+		imageWidth = screenWidthPx - MyDisplayCode.dpToPx(this, 50);
+		
+		// Nothing complicated.  I just want to make sure to provide enough space for the imageView
+		// without pushing the text too far down.
+		if (screenWidthPx <= screenHeightPx)
+			imageHeight = ( screenHeightPx / 3 );	
+		else
+			imageHeight = (int) ( screenHeightPx / 2 );
 		
 		
 		// Make sure that the query returned something
@@ -132,8 +124,8 @@ public class ActivityViewMovieDetails extends AbstractNavDrawer {
 			
 			
 			// Set the size of the Movie image placeholder
-			iViewMovieImage.getLayoutParams().width = posterWidth;
-			iViewMovieImage.getLayoutParams().height = MyDisplayCode.dpToPx(this, 230);
+			iViewMovieImage.getLayoutParams().width = imageWidth;
+			iViewMovieImage.getLayoutParams().height = imageHeight;
 
 			
 			// Download the Image with imageDownloader
@@ -188,8 +180,17 @@ public class ActivityViewMovieDetails extends AbstractNavDrawer {
 					}
 					
 					// Insert new isFavorite value
-					db.update(Movies.TABLE_NAME, values, Movies._ID + "=" + cursor.getString(0), null);
+					writableDb.update(Movies.TABLE_NAME, values, Movies._ID + "=" + cursor.getString(0), null);
 					values.clear();
+				}
+			});
+			
+			iViewShare.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					MyDisplayCode.doToastL(getApplicationContext(), 
+							"If this were a real app, you could share something...");
 				}
 			});
 		}
@@ -201,7 +202,7 @@ public class ActivityViewMovieDetails extends AbstractNavDrawer {
 		// TODO Auto-generated method stub
 		super.onPause();
 		cursor.close();
-		db.close();
+		writableDb.close();
 	}
 
 	@Override

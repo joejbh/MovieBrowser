@@ -29,7 +29,7 @@ public final class NavDrawerContents extends ArrayList<MyListItem> {
 		
 		// Items group 2
 		this.add(new MyListItem(R.layout.drawer_list_head, R.id.drawer_list_head_imageView, R.id.drawer_list_head_textView, 
-				R.drawable.ic_action_storage, "Browse", 
+				R.drawable.ic_action_video, "Browse Movies", 
 				"Header",  ""));
 		this.add(new MyListItem(R.layout.drawer_list_item, R.id.drawer_list_item_imageView, R.id.drawer_list_item_textView, 
 				R.drawable.ic_action_good, "Action", 

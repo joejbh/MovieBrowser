@@ -38,22 +38,23 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 	
 	MovieBrowser mBrowser;
 
-	LayoutInflater myInflater;
 	TextView tViewBanner;
 	String filter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		myInflater = LayoutInflater.from(this);
+		
+		/* ----------------------------------------
+		 * -------- Navigation Drawer stuff -------
+		 */
+		LayoutInflater myInflater = LayoutInflater.from(this);
 
 		// Put the layout of the actual activity into the Drawer Layout
 		LinearLayout layoutInsertPoint = (LinearLayout) findViewById(R.id.activity_content);
 		RelativeLayout activityLayout = (RelativeLayout) myInflater.inflate(
 				R.layout.activity_browse_movies, layoutInsertPoint, false);
 
-		tViewBanner = (TextView) activityLayout.findViewById(R.id.activityBanner);
-		
 		// Create a list of MyListItems for the ArrayAdapter
 		ArrayList<MyListItem> drawerListItems = new NavDrawerContents(
 				getResources());
@@ -67,11 +68,11 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 
 		layoutInsertPoint.addView(activityLayout);
 
-		/*
-		 * -------- The above is default to permit the use of the Navigation Bar
-		 * --------
-		 */
+		/* ------ End Navigation Drawer stuff -----
+		 * ---------------------------------------- */
 		
+		// Find the banner for displaying the genre
+		tViewBanner = (TextView) activityLayout.findViewById(R.id.activityBanner);
 		
 		// Find out what filter/genre to display
 		filter = (String) getIntent().getExtras().get("filter");
