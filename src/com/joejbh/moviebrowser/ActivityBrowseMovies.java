@@ -26,7 +26,9 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 
 	String logTag = "MyMoviesActivity";
 	
-	TableLayout tl;
+	
+	// tLayout Should be outside of onCreate so that optionsMenu can access it
+	TableLayout tLayout;
 	ArrayList<LinearLayout> posterList;
 
 	int posterImgSampleHeightDp = 140;
@@ -37,7 +39,7 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 	MovieBrowser mBrowser;
 
 	LayoutInflater myInflater;
-	TextView title;
+	TextView tViewBanner;
 	String filter;
 	
 	@Override
@@ -50,7 +52,7 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 		RelativeLayout activityLayout = (RelativeLayout) myInflater.inflate(
 				R.layout.activity_browse_movies, layoutInsertPoint, false);
 
-		title = (TextView) activityLayout.findViewById(R.id.activityBanner);
+		tViewBanner = (TextView) activityLayout.findViewById(R.id.activityBanner);
 		
 		// Create a list of MyListItems for the ArrayAdapter
 		ArrayList<MyListItem> drawerListItems = new NavDrawerContents(
@@ -71,38 +73,57 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 		 */
 		
 		
-		
+		// Find out what filter/genre to display
 		filter = (String) getIntent().getExtras().get("filter");
 		
+		
+		// Create a MovieBrowser object with the appropriate sizing, padding, and margins
 		mBrowser = new MovieBrowser(this, 
 				posterImgSampleHeightDp, posterImgSampleWidthDp, 
 				posterChildrenPaddingDp, posterChildrenMarginDp);
 
+		
 		posterList = retrievePosterList(filter);
 		
-		tl = (TableLayout) activityLayout.findViewById(R.id.tLayoutBrowseMovies);
+		tLayout = (TableLayout) activityLayout.findViewById(R.id.tLayoutBrowseMovies);
 		
-		mBrowser.displayBrowser(tl, posterList);
+		mBrowser.displayBrowser(tLayout, posterList);
 		
 	}
 	
-	// Obtain a list of posters to display
-	private ArrayList<LinearLayout> retrievePosterList(String genre) {
+	
+	/**
+	 * Obtains a list of posters to display.
+	 * This function uses imageDownloader and will have to be called again in order to re-Display the images
+	 * @param genre
+	 * @return ArrayList<LinearLayout> of 'posters'
+	 */
+	private ArrayList<LinearLayout> retrievePosterList(String lFilter) {
 
-		if (filter.equals("My Favorites")){
-			title.setText("My Favorite Movies");
+		// Set the banner text view depending on the filter
+		if (lFilter.equals("My Favorites")){
+			tViewBanner.setText("My Favorite Movies");
 		}else{
-			title.setText(filter + " Movies");
+			tViewBanner.setText(lFilter + " Movies");
 		} 
 		
+		
+		// LinearLayout that will be used for the posters
 		LinearLayout moviePoster;
+		
+		
+		// Array list of completed posters
 		ArrayList<LinearLayout> posterList = new ArrayList<LinearLayout>();
 
-		MySQLiteOpenHelper dbHelper  = new MySQLiteOpenHelper(this);
 		
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		// Get readable database
+		MySQLiteOpenHelper dbHelper = new MySQLiteOpenHelper(this);
+		SQLiteDatabase readableDb = dbHelper.getReadableDatabase();
 		
+		
+		// Cursor for info returned from query
 		Cursor cursor;
+		
 		
 		// Set which columns should be retrieved from the db
 		String[] moviesProjection = {
@@ -114,13 +135,16 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 		    };
 
 
+		// Set the selection part of the query - contingent on the filter.
 		String movieSelection;
-		if (filter.equals("My Favorites"))
+		
+		if (lFilter.equals("My Favorites"))
 			movieSelection = Movies.IS_FAVORITE + "=1";
 		else
-			movieSelection = Movies.GENRE + "='" + genre + "'";
+			movieSelection = Movies.GENRE + "='" + lFilter + "'";
 		
-		cursor = db.query(
+		
+		cursor = readableDb.query(
 				Movies.TABLE_NAME,
 				moviesProjection,
 				movieSelection,
@@ -130,11 +154,14 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 			    null
 			    );
 		
+		
 		Log.i(logTag, "Checking if cursor is null...");
 		
+		// If the cursor is not empty
 		if (cursor != null && cursor.moveToFirst()) {
 			
 			Log.i(logTag, "Cursor not null and about to traverse the cursor");
+			
 			do {
 				moviePoster = mBrowser.makePoster(
 						this,
@@ -143,18 +170,12 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 						cursor.getString(cursor.getColumnIndex(Movies.IMAGE_URL)),
 						cursor.getString(cursor.getColumnIndex(Movies.IS_FAVORITE))
 						);
-				posterList.add(moviePoster);
-				
-
+				posterList.add(moviePoster);	
 			} while(cursor.moveToNext());
+			
 		}
+		readableDb.close();
 		return posterList;
-		
-		
-		/*
-		String sortOrder =
-				Movies.NAME + " ASC";
-		 */
 	}
 	
 	
@@ -177,18 +198,18 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 		    	posterChildrenPaddingDp = 8;
 		    	posterChildrenMarginDp = 20;
 		    	
-		    	tl.removeAllViews();
+		    	tLayout.removeAllViews();
 		    	
+		    	// Get a new MovieBrowser with the new sizes.
 		    	mBrowser = new MovieBrowser(this, 
 						posterImgSampleHeightDp, posterImgSampleWidthDp, 
 						posterChildrenPaddingDp, posterChildrenMarginDp);
 
+		    	
+		    	// Need a new posterList since the MovieBrowser configuration has changed
 				posterList = retrievePosterList(filter);
 				
-				
-				tl = (TableLayout) findViewById(R.id.tLayoutBrowseMovies);
-				
-				mBrowser.displayBrowser(tl, posterList);
+				mBrowser.displayBrowser(tLayout, posterList);
 		    	
 			    return true;
 		    
@@ -198,7 +219,7 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 		    	posterChildrenPaddingDp = 5;
 		    	posterChildrenMarginDp = 10;
 		    	
-		    	tl.removeAllViews();
+		    	tLayout.removeAllViews();
 		    	
 		    	mBrowser = new MovieBrowser(this, 
 						posterImgSampleHeightDp, posterImgSampleWidthDp, 
@@ -206,10 +227,7 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 
 				posterList = retrievePosterList(filter);
 				
-				
-				tl = (TableLayout) findViewById(R.id.tLayoutBrowseMovies);
-				
-				mBrowser.displayBrowser(tl, posterList);		    
+				mBrowser.displayBrowser(tLayout, posterList);		    
 		    default:
 		    return super.onOptionsItemSelected(item);
 		}
