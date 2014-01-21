@@ -13,7 +13,6 @@ import android.content.ContentValues;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -23,16 +22,12 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.TranslateAnimation;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 
 public class ActivityHome extends AbstractNavDrawer {
 
 	String logTag = "ActivityHome";
 	
-	int screenHeightPx;
-	int screenWidthPx;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,16 +58,11 @@ public class ActivityHome extends AbstractNavDrawer {
 
 		animateMenuArrow();
 		
-		
 		// Check if this is the first time the app is being run.  If so, create Movies DB and add default items.
-		final String PREFS_NAME = "MyPrefsFile";
-
+		String PREFS_NAME = "MyPrefsFile";
 		SharedPreferences appHistory = getSharedPreferences(PREFS_NAME, 0);
-
 		if (appHistory.getBoolean("first_run", true)) {
-		   		
 			setDefaultDbValues();
-			
 			appHistory.edit().putBoolean("first_run", false).commit(); 
 		}
 		
@@ -87,15 +77,14 @@ public class ActivityHome extends AbstractNavDrawer {
 		
 		Log.i(logTag, "Creating default db because first time use of app");
 		
-		MySQLiteOpenHelper dbHelper  = new MySQLiteOpenHelper(this);
 		
-		// Get DB in writable format
-		SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-		// Store values to be put into DB
+		// Get writable DB
+		MySQLiteOpenHelper dbHelper  = new MySQLiteOpenHelper(this);
+		SQLiteDatabase writableDb = dbHelper.getWritableDatabase();
 		ContentValues values = new ContentValues();
 		
-		
+
+		// DB Insert - Office Space
 		values.put(Movies.NAME, "Office Space");
 		values.put(Movies.DESCRIPTION, "Office space is a comedic tale of company workers who " +
 				"hate their jobs and decide to rebel against their greedy boss. In this scene, " +
@@ -105,10 +94,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/Office_Space_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - Die Hard
 		values.put(Movies.NAME, "Die Hard");
 		values.put(Movies.DESCRIPTION, "International terrorists have taken over a building and " +
 				"are holding every one as hostage. Good guy NY cop John McCLane interfers with their " +
@@ -119,21 +109,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/Die_Hard_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
-		values.put(Movies.NAME, "Voices");
-		values.put(Movies.DESCRIPTION, "Audrey attempts to interview troubled Evelyn.");
-		values.put(Movies.GENRE, "Drama");
-		values.put(Movies.IMAGE_URL, "http://www.tersefilms.com/images/voices_sq.jpg");
-		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/Voices_350.jpg");
-		values.put(Movies.IS_FAVORITE, false);
-		
-		db.insert(Movies.TABLE_NAME, null, values);
-		values.clear();
-		
-		
+		// DB Insert - Prototype
 		values.put(Movies.NAME, "Prototype");
 		values.put(Movies.DESCRIPTION, "A prototype of the ROD project is under development. " +
 				"Stan, as lead project manager, prepares to take his latest research to the boss " +
@@ -143,10 +123,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/prototype_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - Raising Arizona
 		values.put(Movies.NAME, "Raising Arizona");
 		values.put(Movies.DESCRIPTION, "When a childless couple of an ex-con and an ex-cop decide to " +
 				"help themselves to one of another family's quintupelets, their lives get more complicated " +
@@ -157,10 +138,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/Arizona_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - The Terminator
 		values.put(Movies.NAME, "The Terminator");
 		values.put(Movies.DESCRIPTION, "Skynet is a 21st century computer waging a losing war against " +
 				"humans. To defeat the humans, Skynet sends a cyborg-machine back in time to destroy John " +
@@ -171,10 +153,23 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/Terminator_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - Voices
+		values.put(Movies.NAME, "Voices");
+		values.put(Movies.DESCRIPTION, "Audrey attempts to interview troubled Evelyn.");
+		values.put(Movies.GENRE, "Drama");
+		values.put(Movies.IMAGE_URL, "http://www.tersefilms.com/images/voices_sq.jpg");
+		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/Voices_350.jpg");
+		values.put(Movies.IS_FAVORITE, false);
+		
+		writableDb.insert(Movies.TABLE_NAME, null, values);
+		values.clear();
+		
+		
+		// DB Insert - Where Are We?
 		values.put(Movies.NAME, "Where Are We?");
 		values.put(Movies.DESCRIPTION, "Arma virumque cano, Troiae qui primus ab oris" +
 				"Italiam, fato profugus, Laviniaque venit" +
@@ -185,10 +180,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/additional/where_are_we_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - The Long Night
 		values.put(Movies.NAME, "The Long Night");
 		values.put(Movies.DESCRIPTION, "Arma virumque cano, Troiae qui primus ab oris" +
 				"Italiam, fato profugus, Laviniaque venit" +
@@ -199,10 +195,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/additional/the_long_night_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - Sand
 		values.put(Movies.NAME, "Sand");
 		values.put(Movies.DESCRIPTION, "Arma virumque cano, Troiae qui primus ab oris" +
 				"Italiam, fato profugus, Laviniaque venit" +
@@ -213,10 +210,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/additional/sand_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - Mangia
 		values.put(Movies.NAME, "Mangia");
 		values.put(Movies.DESCRIPTION, "Arma virumque cano, Troiae qui primus ab oris" +
 				"Italiam, fato profugus, Laviniaque venit" +
@@ -227,10 +225,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/additional/mangia_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - Clay Friends
 		values.put(Movies.NAME, "Clay Friends");
 		values.put(Movies.DESCRIPTION, "Arma virumque cano, Troiae qui primus ab oris" +
 				"Italiam, fato profugus, Laviniaque venit" +
@@ -241,10 +240,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/additional/clay_friends_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - The Long Road
 		values.put(Movies.NAME, "The Long Road");
 		values.put(Movies.DESCRIPTION, "Arma virumque cano, Troiae qui primus ab oris" +
 				"Italiam, fato profugus, Laviniaque venit" +
@@ -255,10 +255,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/additional/the_long_road_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - Cathedral
 		values.put(Movies.NAME, "The Cathedral");
 		values.put(Movies.DESCRIPTION, "Arma virumque cano, Troiae qui primus ab oris" +
 				"Italiam, fato profugus, Laviniaque venit" +
@@ -269,10 +270,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/additional/the_cathedral_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - Pumpkins
 		values.put(Movies.NAME, "Pumpkins");
 		values.put(Movies.DESCRIPTION, "Arma virumque cano, Troiae qui primus ab oris" +
 				"Italiam, fato profugus, Laviniaque venit" +
@@ -283,10 +285,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/additional/pumpkins_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - He Could Do It
 		values.put(Movies.NAME, "He Could Do It");
 		values.put(Movies.DESCRIPTION, "Arma virumque cano, Troiae qui primus ab oris" +
 				"Italiam, fato profugus, Laviniaque venit" +
@@ -297,10 +300,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/additional/he_could_do_it_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
 		
+		// DB Insert - Being Watched
 		values.put(Movies.NAME, "Being Watched");
 		values.put(Movies.DESCRIPTION, "Arma virumque cano, Troiae qui primus ab oris" +
 				"Italiam, fato profugus, Laviniaque venit" +
@@ -311,23 +315,19 @@ public class ActivityHome extends AbstractNavDrawer {
 		values.put(Movies.WIDE_IMAGE_URL, "http://www.tersefilms.com/images/additional/being_watched_350.jpg");
 		values.put(Movies.IS_FAVORITE, false);
 		
-		db.insert(Movies.TABLE_NAME, null, values);
+		writableDb.insert(Movies.TABLE_NAME, null, values);
 		values.clear();
 		
-		db.close();
+		writableDb.close();
 		
 	}
 	
+	
+	// Little animation intended to show the user where the menu Navigation Drawer
 	private void animateMenuArrow() {
-		DisplayMetrics metrics;
-		metrics = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(metrics);
-		screenHeightPx = metrics.heightPixels;
-		screenWidthPx = metrics.widthPixels;
-		
 
-		final View target = findViewById(R.id.imageViewMenuArrow);
-		final View targetParent = (View) target.getParent();
+		View target = findViewById(R.id.imageViewMenuArrow);
+		View targetParent = (View) target.getParent();
 
 		Animation a = new TranslateAnimation(0.0f, targetParent.getWidth()
 				- target.getWidth() - targetParent.getPaddingLeft()
@@ -340,10 +340,7 @@ public class ActivityHome extends AbstractNavDrawer {
 		target.startAnimation(a);	
 	}
 
-	void doToast(String string) {
-		Toast.makeText(this, string, Toast.LENGTH_SHORT).show();
-	}
-
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
