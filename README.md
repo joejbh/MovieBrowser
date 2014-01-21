@@ -9,6 +9,7 @@ The content regarding the movies is stored in a local SQLite DB, which is create
 Handles multiple screen sizes, as well as vertical and horizontal orientation.
 The user can change the view size of the "MoviePosters"
 
+----------
 
 Particular Features:
 
