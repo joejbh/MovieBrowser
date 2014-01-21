@@ -24,7 +24,7 @@ public final class NavDrawerContents extends ArrayList<MyListItem> {
 		
 		this.add(new MyListItem(R.layout.drawer_list_item, R.id.drawer_list_item_imageView, R.id.drawer_list_item_textView, 
 				R.drawable.ic_action_play, "My Favorites", 
-				"Item",  "filter-BrowseMoviesActivity"));
+				"Item",  "filter-ActivityBrowseMovies"));
 		
 		
 		// Items group 2
@@ -33,13 +33,13 @@ public final class NavDrawerContents extends ArrayList<MyListItem> {
 				"Header",  ""));
 		this.add(new MyListItem(R.layout.drawer_list_item, R.id.drawer_list_item_imageView, R.id.drawer_list_item_textView, 
 				R.drawable.ic_action_good, "Action", 
-				"Item",  "filter-BrowseMoviesActivity"));
+				"Item",  "filter-ActivityBrowseMovies"));
 		this.add(new MyListItem(R.layout.drawer_list_item, R.id.drawer_list_item_imageView, R.id.drawer_list_item_textView, 
 				R.drawable.ic_action_favorite, "Drama", 
-				"Item",  "filter-BrowseMoviesActivity"));
+				"Item",  "filter-ActivityBrowseMovies"));
 		this.add(new MyListItem(R.layout.drawer_list_item, R.id.drawer_list_item_imageView, R.id.drawer_list_item_textView, 
 				R.drawable.ic_action_group, "Comedy", 
-				"Item",  "filter-BrowseMoviesActivity"));		
+				"Item",  "filter-ActivityBrowseMovies"));		
 	}
 
 }

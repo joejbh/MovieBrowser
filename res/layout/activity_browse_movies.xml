@@ -5,7 +5,7 @@
     android:background="#F2E8C7"
     android:fitsSystemWindows="false"
     android:orientation="vertical"
-    tools:context=".BrowseMoviesActivity" >
+    tools:context=".ActivityBrowseMovies" >
 
     <LinearLayout
         android:id="@+id/bannerWrapper"

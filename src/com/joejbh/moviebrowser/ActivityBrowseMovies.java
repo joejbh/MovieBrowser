@@ -23,7 +23,7 @@ import com.joejbh.sourcecode.MyListItem;
 import com.joejbh.moviebrowser.database.*;
 import com.joejbh.moviebrowser.database.MovieContract.Movies;
 
-public class BrowseMoviesActivity extends AbstractNavDrawer{
+public class ActivityBrowseMovies extends AbstractNavDrawer{
 
 	String logTag = "MyMoviesActivity";
 	

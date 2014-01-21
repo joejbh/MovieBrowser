@@ -26,9 +26,9 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 
-public class HomeActivity extends AbstractNavDrawer {
+public class ActivityHome extends AbstractNavDrawer {
 
-	String logTag = "HomeActivity";
+	String logTag = "ActivityHome";
 	
 	int screenHeightPx;
 	int screenWidthPx;

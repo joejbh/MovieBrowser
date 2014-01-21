@@ -113,7 +113,7 @@ public class MovieBrowser {
 			public void onClick(View v) {
 				Intent intent = new Intent();
 		        intent.setClassName("com.joejbh.moviebrowser", 
-		            "com.joejbh.moviebrowser.ViewMovieDetailsActivity");
+		            "com.joejbh.moviebrowser.ActivityViewMovieDetails");
 		        intent.putExtra("_idPass", _idPass);
 		        activity.startActivity(intent);
 			}

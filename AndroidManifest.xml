@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.joejbh.moviebrowser.HomeActivity"
+            android:name="com.joejbh.moviebrowser.ActivityHome"
             android:label="@string/app_name"
             android:logo="@drawable/terse_banner" >
             <intent-filter>
@@ -27,7 +27,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.joejbh.moviebrowser.BrowseMoviesActivity"
+            android:name="com.joejbh.moviebrowser.ActivityBrowseMovies"
             android:label="@string/title_activity_my_movies"
             android:logo="@drawable/terse_banner" >
         </activity>
@@ -57,7 +57,7 @@
             android:logo="@drawable/terse_banner" >
         </activity>
         <activity
-            android:name="com.joejbh.moviebrowser.ViewMovieDetailsActivity"
+            android:name="com.joejbh.moviebrowser.ActivityViewMovieDetails"
             android:label="@string/title_activity_view_movie_details" >
         </activity>
     </application>

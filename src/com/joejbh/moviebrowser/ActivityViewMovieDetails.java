@@ -1,6 +1,5 @@
 package com.joejbh.moviebrowser;
 
-import java.util.ArrayList;
 
 import com.joejbh.moviebrowser.database.MySQLiteOpenHelper;
 import com.joejbh.moviebrowser.database.MovieContract.Movies;
@@ -14,10 +13,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ViewMovieDetailsActivity extends Activity {
+public class ActivityViewMovieDetails extends Activity {
 
 	ImageView iViewMovieImage;
 	TextView tViewMovieName, tViewMovieDescription;
@@ -49,7 +47,6 @@ public class ViewMovieDetailsActivity extends Activity {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		
 		Cursor cursor;
-		
 		
 		cursor = db.query(
 				Movies.TABLE_NAME,  	
