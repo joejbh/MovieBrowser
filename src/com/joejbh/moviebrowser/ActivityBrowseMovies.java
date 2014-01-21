@@ -26,8 +26,6 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 
 	String logTag = "MyMoviesActivity";
 	
-	LinearLayout layoutInsertPoint;
-	RelativeLayout activityLayout;
 	TableLayout tl;
 	ArrayList<LinearLayout> posterList;
 
@@ -48,8 +46,8 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 		myInflater = LayoutInflater.from(this);
 
 		// Put the layout of the actual activity into the Drawer Layout
-		layoutInsertPoint = (LinearLayout) findViewById(R.id.activity_content);
-		activityLayout = (RelativeLayout) myInflater.inflate(
+		LinearLayout layoutInsertPoint = (LinearLayout) findViewById(R.id.activity_content);
+		RelativeLayout activityLayout = (RelativeLayout) myInflater.inflate(
 				R.layout.activity_browse_movies, layoutInsertPoint, false);
 
 		title = (TextView) activityLayout.findViewById(R.id.activityBanner);
@@ -82,12 +80,11 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 
 		posterList = retrievePosterList(filter);
 		
-		tl = (TableLayout) activityLayout.findViewById(R.id.tableLayout);
+		tl = (TableLayout) activityLayout.findViewById(R.id.tLayoutBrowseMovies);
 		
 		mBrowser.displayBrowser(tl, posterList);
 		
 	}
-	
 	
 	// Obtain a list of posters to display
 	private ArrayList<LinearLayout> retrievePosterList(String genre) {
@@ -186,10 +183,10 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 						posterImgSampleHeightDp, posterImgSampleWidthDp, 
 						posterChildrenPaddingDp, posterChildrenMarginDp);
 
-				posterList = retrievePosterList("Comedy");
+				posterList = retrievePosterList(filter);
 				
 				
-				tl = (TableLayout) activityLayout.findViewById(R.id.tableLayout);
+				tl = (TableLayout) findViewById(R.id.tLayoutBrowseMovies);
 				
 				mBrowser.displayBrowser(tl, posterList);
 		    	
@@ -207,10 +204,10 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 						posterImgSampleHeightDp, posterImgSampleWidthDp, 
 						posterChildrenPaddingDp, posterChildrenMarginDp);
 
-				posterList = retrievePosterList("Comedy");
+				posterList = retrievePosterList(filter);
 				
 				
-				tl = (TableLayout) activityLayout.findViewById(R.id.tableLayout);
+				tl = (TableLayout) findViewById(R.id.tLayoutBrowseMovies);
 				
 				mBrowser.displayBrowser(tl, posterList);		    
 		    default:
