@@ -44,15 +44,12 @@ public class ActivityViewMovieDetails extends AbstractNavDrawer {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		this.setTitle("");
 		myInflater = LayoutInflater.from(this);
 
 		// Put the layout of the actual activity into the Drawer Layout
 		layoutInsertPoint = (LinearLayout) findViewById(R.id.activity_content);
 		activityLayout = (RelativeLayout) myInflater.inflate(
 				R.layout.activity_view_movie_details, layoutInsertPoint, false);
-
-		title = (TextView) activityLayout.findViewById(R.id.activityBanner);
 		
 		// Create a list of MyListItems for the ArrayAdapter
 		ArrayList<MyListItem> drawerListItems = new NavDrawerContents(

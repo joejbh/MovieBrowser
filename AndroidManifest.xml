@@ -29,7 +29,6 @@
         
         <activity
             android:name="com.joejbh.moviebrowser.ActivityBrowseMovies"
-            android:label="@string/title_activity_my_movies"
             android:logo="@drawable/terse_banner" >
         </activity>
         

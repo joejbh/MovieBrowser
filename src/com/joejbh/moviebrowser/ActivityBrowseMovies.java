@@ -45,7 +45,6 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setTitle("");
 		myInflater = LayoutInflater.from(this);
 
 		// Put the layout of the actual activity into the Drawer Layout
@@ -72,8 +71,6 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 		 * -------- The above is default to permit the use of the Navigation Bar
 		 * --------
 		 */
-		
-		
 		
 		
 		
