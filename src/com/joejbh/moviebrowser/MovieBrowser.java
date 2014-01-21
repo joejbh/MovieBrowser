@@ -50,6 +50,8 @@ public class MovieBrowser {
 			int posterImageSampleHeightDp, int posterImageSampleWidthDp,
 			int posterChildrenPaddingDp, int posterChildrenMarginDp) {
 
+		mInflater = (LayoutInflater) activity.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+		
 		metrics = new DisplayMetrics();
 
 		activity.getWindowManager().getDefaultDisplay().getRealMetrics(metrics);
@@ -75,18 +77,12 @@ public class MovieBrowser {
 		
 		// Calculate how many posters can fit on one row.
 		numPostersInRow = (screenWidthPx - reservedScreenPaddingPx) / posterFullWidthPx;
-		
-		/*adjustedScreenPadding = (screenWidthPx - (posterFullWidthPx * numPostersInRow))
-				+ reservedScreenPaddingPx;*/
-		
+
+		// adjustedScreenPadding is from an older version of the app
 		adjustedScreenPadding = 0;
 		
-		mInflater = (LayoutInflater) activity.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-		
 		imageDownloader = new ImageDownloader();
-	}
-	
-	
+	}	
 	
 	// Make the poster
 	public LinearLayout makePoster(final Activity activity, final int _idPass, 
@@ -171,12 +167,10 @@ public class MovieBrowser {
 		}
 
 		return moviePoster;
-
 	}
 	
 	public void displayBrowser(TableLayout tableLayout, ArrayList<LinearLayout> posterList){
 		
-
 		TableRow tr;
 		tr = (TableRow) mInflater.inflate(R.layout.layout_new_row, null, false);
 

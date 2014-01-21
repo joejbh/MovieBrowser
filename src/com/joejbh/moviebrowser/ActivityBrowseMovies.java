@@ -217,9 +217,6 @@ public class ActivityBrowseMovies extends AbstractNavDrawer{
 		    return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	
-	
 }
 
 

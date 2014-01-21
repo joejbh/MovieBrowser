@@ -36,7 +36,6 @@ public class ActivityHome extends AbstractNavDrawer {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setTitle("");
 		LayoutInflater myInflater = LayoutInflater.from(this);
 
 		// Put the layout of the actual activity into the Drawer Layout
@@ -56,6 +55,11 @@ public class ActivityHome extends AbstractNavDrawer {
 		createDrawer(drawerAdapter);
 
 		layoutInsertPoint.addView(activityLayout);
+		
+		/*
+		 * -------- The above is default to permit the use of the Navigation Bar
+		 * --------
+		 */
 
 		animateMenuArrow();
 		
@@ -73,13 +77,13 @@ public class ActivityHome extends AbstractNavDrawer {
 		}
 		
 	}
-
 	
 	// Perhaps later I will have the information retrieved from a remote source
 	// but for now, I'm inserting values into a local sqlite db
 	private void setDefaultDbValues() {
 		
-		MyDisplayCode.doToast(this, "Creating default db");
+		MyDisplayCode.doToastL(this, "Welcome.  Since this is your first time using this app...");
+		MyDisplayCode.doToast(this, "...Creating default db");
 		
 		Log.i(logTag, "Creating default db because first time use of app");
 		
