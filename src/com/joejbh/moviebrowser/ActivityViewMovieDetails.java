@@ -1,22 +1,35 @@
 package com.joejbh.moviebrowser;
 
 
+import java.util.ArrayList;
+
 import com.joejbh.moviebrowser.database.MySQLiteOpenHelper;
 import com.joejbh.moviebrowser.database.MovieContract.Movies;
+import com.joejbh.sourcecode.AbstractNavDrawer;
 import com.joejbh.sourcecode.ImageDownloader;
+import com.joejbh.sourcecode.MyArrayAdapter;
 import com.joejbh.sourcecode.MyDisplayCode;
+import com.joejbh.sourcecode.MyListItem;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class ActivityViewMovieDetails extends Activity {
+public class ActivityViewMovieDetails extends AbstractNavDrawer {
 
+	LinearLayout layoutInsertPoint;
+	RelativeLayout activityLayout;
+	LayoutInflater myInflater;
+	TextView title;
+	
 	ImageView iViewMovieImage;
 	TextView tViewMovieName, tViewMovieDescription;
 	
@@ -30,7 +43,35 @@ public class ActivityViewMovieDetails extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_view_movie_details);
+		
+		this.setTitle("");
+		myInflater = LayoutInflater.from(this);
+
+		// Put the layout of the actual activity into the Drawer Layout
+		layoutInsertPoint = (LinearLayout) findViewById(R.id.activity_content);
+		activityLayout = (RelativeLayout) myInflater.inflate(
+				R.layout.activity_view_movie_details, layoutInsertPoint, false);
+
+		title = (TextView) activityLayout.findViewById(R.id.activityBanner);
+		
+		// Create a list of MyListItems for the ArrayAdapter
+		ArrayList<MyListItem> drawerListItems = new NavDrawerContents(
+				getResources());
+
+		// Create the ArrayAdapter for the Drawer.
+		ArrayAdapter<MyListItem> drawerAdapter = new MyArrayAdapter(this,
+				drawerListItems);
+
+		// Create the drawer. This is a method of AbstractNavDrawer.
+		createDrawer(drawerAdapter);
+
+		layoutInsertPoint.addView(activityLayout);
+		
+		/*
+		 * -------- The above is default to permit the use of the Navigation Bar
+		 * --------
+		 */
+		
 		
 		iViewMovieImage = (ImageView) findViewById(R.id.iViewMovieImage);
 		tViewMovieName = (TextView) findViewById(R.id.tViewMovieName);
