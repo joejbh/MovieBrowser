@@ -56,7 +56,7 @@
 			    android:layout_height="wrap_content"
 			    android:layout_alignRight="@+id/tViewMovieDescription"
 			    android:layout_alignTop="@+id/iViewIsFavorite"
-			    android:src="@drawable/ic_action_forward" />
+			    android:src="@drawable/ic_action_share" />
 		
 			<ImageView
 			    android:id="@+id/iViewIsFavorite"
