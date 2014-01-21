@@ -29,12 +29,13 @@
         
         <activity
             android:name="com.joejbh.moviebrowser.ActivityBrowseMovies"
+            android:label=""
             android:logo="@drawable/terse_banner" >
         </activity>
         
         <activity
             android:name="com.joejbh.moviebrowser.ActivityViewMovieDetails"
-            android:label="@string/title_activity_view_movie_details" 
+            android:label="" 
             android:logo="@drawable/terse_banner">
         </activity>
         
