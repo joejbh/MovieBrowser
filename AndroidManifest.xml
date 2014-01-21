@@ -16,50 +16,29 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        
         <activity
             android:name="com.joejbh.moviebrowser.ActivityHome"
             android:label="@string/app_name"
             android:logo="@drawable/terse_banner" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
         <activity
             android:name="com.joejbh.moviebrowser.ActivityBrowseMovies"
             android:label="@string/title_activity_my_movies"
             android:logo="@drawable/terse_banner" >
         </activity>
-        <activity
-            android:name="com.joejbh.moviebrowser.MyReviewsActivity"
-            android:label="@string/title_activity_my_reviews"
-            android:logo="@drawable/terse_banner" >
-        </activity>
-        <activity
-            android:name="com.joejbh.moviebrowser.BrowseActionActivity"
-            android:label="@string/title_activity_browse_action"
-            android:logo="@drawable/terse_banner" >
-        </activity>
-        <activity
-            android:name="com.joejbh.moviebrowser.BrowseDramaActivity"
-            android:label="@string/title_activity_browse_drama"
-            android:logo="@drawable/terse_banner" >
-        </activity>
-        <activity
-            android:name="com.joejbh.moviebrowser.BrowseComedyActivity"
-            android:label="@string/title_activity_browse_comedy"
-            android:logo="@drawable/terse_banner" >
-        </activity>
-        <activity
-            android:name="com.joejbh.moviebrowser.BrowseByActorActivity"
-            android:label="@string/title_activity_browse_by_actor"
-            android:logo="@drawable/terse_banner" >
-        </activity>
+        
         <activity
             android:name="com.joejbh.moviebrowser.ActivityViewMovieDetails"
-            android:label="@string/title_activity_view_movie_details" >
+            android:label="@string/title_activity_view_movie_details" 
+            android:logo="@drawable/terse_banner">
         </activity>
+        
     </application>
 
 </manifest>
