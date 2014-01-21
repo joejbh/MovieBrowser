@@ -26,9 +26,6 @@ import com.joejbh.sourcecode.ImageDownloader;
 public class MovieBrowser {
 
 	DisplayMetrics metrics;
-	
-	private int reservedScreenPaddingDp;	
-	private int reservedScreenPaddingPx;
 
 	private int posterImageSampleHeightPx;
 	private int posterImageSampleWidthPx;
@@ -38,14 +35,10 @@ public class MovieBrowser {
 	
 	private int screenWidthPx;
 	
-	private int numPostersInRow;
-	private int adjustedScreenPadding;
-	
+	private int maxPostersInRow;
+		
 	LayoutInflater mInflater;
 	
-	ImageDownloader imageDownloader;
-	
-
 	public MovieBrowser(Activity activity, 
 			int posterImageSampleHeightDp, int posterImageSampleWidthDp,
 			int posterChildrenPaddingDp, int posterChildrenMarginDp) {
@@ -68,25 +61,23 @@ public class MovieBrowser {
 		// to the left and right of the poster
 		posterFullWidthPx = (posterImageSampleWidthPx)
 				+ (posterChildrenPaddingPx * 2) + (posterChildrenMarginPx * 2);
-
 		
 		// How much space the primary layout's padding will take up
 
-		reservedScreenPaddingDp = activity.getResources().getInteger(R.integer.activity_horizontal_margin_int);
-		reservedScreenPaddingPx = MyDisplayCode.dpToPx(activity.getApplicationContext(), reservedScreenPaddingDp);
+		int reservedScreenPaddingDp = activity.getResources().getInteger(R.integer.activity_horizontal_margin_int);
+		int reservedScreenPaddingPx = MyDisplayCode.dpToPx(activity.getApplicationContext(), reservedScreenPaddingDp);
 		
 		// Calculate how many posters can fit on one row.
-		numPostersInRow = (screenWidthPx - reservedScreenPaddingPx) / posterFullWidthPx;
+		maxPostersInRow = (screenWidthPx - reservedScreenPaddingPx) / posterFullWidthPx;
 
-		// adjustedScreenPadding is from an older version of the app
-		adjustedScreenPadding = 0;
 		
-		imageDownloader = new ImageDownloader();
 	}	
 	
 	// Make the poster
 	public LinearLayout makePoster(final Activity activity, final int _idPass, 
 			String movieTitle, String movieImageUrl, final String isFavorite) {
+		
+		ImageDownloader imageDownloader = new ImageDownloader();
 		
 		// Inflate the movie poster layout
 		LinearLayout moviePoster;
@@ -117,8 +108,7 @@ public class MovieBrowser {
 		
 		
 		// Set the TextView showing the Movie's Name
-		TextView posterText;
-		posterText = (TextView) moviePoster.findViewById(R.id.textViewPoster);
+		TextView posterText = (TextView) moviePoster.findViewById(R.id.textViewPoster);
 		posterText.setText(movieTitle);
 
 		imageDownloader.download(movieImageUrl, posterImageView,
@@ -126,8 +116,13 @@ public class MovieBrowser {
 		
 		
 		// Configure the Poster Favorite Image View (indicates if the movie is a favorite)
-		ImageView iView = (ImageView) moviePoster.findViewById(R.id.imgViewPosterFav);
-		iView.setOnClickListener(new OnClickListener() {
+		ImageView iViewIsFavorite = (ImageView) moviePoster.findViewById(R.id.iViewPosterFav);
+		
+		if(isFavorite.equals("1")){
+			iViewIsFavorite.setImageResource(R.drawable.ic_action_important);
+		}
+		
+		iViewIsFavorite.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				toggleFavorite(v);				
@@ -162,34 +157,48 @@ public class MovieBrowser {
 			}
 		});
 		
-		if(isFavorite.equals("1")){
-			iView.setImageResource(R.drawable.ic_action_important);
-		}
+		
+		ImageView iViewShare = (ImageView) moviePoster.findViewById(R.id.iViewShare);
+		
+		iViewShare.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				MyDisplayCode.doToast(activity.getApplicationContext(), 
+						"If this were a real app, you could share something...");
+			}
+		});
 
 		return moviePoster;
 	}
 	
 	public void displayBrowser(TableLayout tableLayout, ArrayList<LinearLayout> posterList){
 		
-		TableRow tr;
-		tr = (TableRow) mInflater.inflate(R.layout.layout_new_row, null, false);
+		TableRow tr = (TableRow) mInflater.inflate(R.layout.layout_new_row, null, false);
 
-		tableLayout.setPadding((adjustedScreenPadding / 2), 0, 0, 0);
-
-		int counter = 0;
+		tableLayout.setPadding(0, 0, 0, 0);
+		
+		// Keep track of how many posters in current row.
+		int postersInRowCounter = 0;
+		
+		// Loop through all items in posterList
 		for (LinearLayout posterItem : posterList) {
 
+			// Add posterItem into the current row.  Increase postersInRowCounter.
 			tr.addView(posterItem);
-			counter++;
-
-			if (counter >= numPostersInRow) {
+			postersInRowCounter++;
+			
+			// If reached the max number of posters permitted in row, put row into TableLayout; reset counter.
+			if (postersInRowCounter >= maxPostersInRow) {
 				tableLayout.addView(tr);
+				postersInRowCounter = 0;
+				
+				// Make a new row to put posters into.
 				tr = (TableRow) mInflater.inflate(R.layout.layout_new_row, null, false);
-				counter = 0;
-			}
+			}	
 		}
 
-		if (counter > 0)
+		if (postersInRowCounter > 0)
 			tableLayout.addView(tr);
 
 	}
