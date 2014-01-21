@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -26,7 +25,6 @@ import com.joejbh.moviebrowser.database.MovieContract.Movies;
 public class ActivityBrowseMovies extends AbstractNavDrawer{
 
 	String logTag = "MyMoviesActivity";
-	
 	
 	LinearLayout layoutInsertPoint;
 	RelativeLayout activityLayout;
