@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Movie Browser</string>
+    <string name="poster_large">View Larger Posters</string>
+    <string name="poster_normal">View Normal Size Posters</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="title_activity_my_reviews">MyReviewsActivity</string>
+    <string name="title_activity_my_movies">My Movies</string>
+    <string name="title_activity_browse_action">Browse Action Movies</string>
+    <string name="title_activity_browse_drama">Browse Drama Movies</string>
+    <string name="title_activity_browse_comedy">Browse Comedy Movies</string>
+    <string name="title_activity_browse_by_actor">BrowseByActorActivity</string>
+    <string name="title_activity_view_movie_details">ViewMovieDetailsActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+
+</resources>

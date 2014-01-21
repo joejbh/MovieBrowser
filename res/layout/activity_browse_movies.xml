@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F2E8C7"
+    android:fitsSystemWindows="false"
+    android:orientation="vertical"
+    tools:context=".BrowseMoviesActivity" >
+
+    <LinearLayout
+        android:id="@+id/bannerWrapper"
+        android:layout_width="fill_parent"
+        android:layout_height="35dp"
+        android:background="#a1cff2"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true" >
+
+        <TextView
+            android:id="@+id/activityBanner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="My Movies"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bannerWrapper"
+        android:layout_centerHorizontal="true"
+        android:background="#F2E8C7"
+        android:scrollbars="none" >
+
+        <TableLayout
+            android:id="@+id/tableLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+        </TableLayout>
+    </ScrollView>
+
+</RelativeLayout>
